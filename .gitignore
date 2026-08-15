@@ -1,2 +1,4 @@
 __pycache__/
 *.pyc
+srd_cours_cloture_*.csv
+srd_cours_cloture_*.xlsx
