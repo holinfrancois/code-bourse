@@ -2,3 +2,6 @@ __pycache__/
 *.pyc
 srd_cours_cloture_*.csv
 srd_cours_cloture_*.xlsx
+trades_rsi_*.csv
+trades_rsi_*.xlsx
+graphiques_rsi_*/
