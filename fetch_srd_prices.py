@@ -56,7 +56,7 @@ SRD_SAMPLE = {
     "Carrefour": "CA.PA",
 }
 
-PERIOD = "1y"
+PERIOD = "5y"
 INTERVAL = "1wk"
 MAX_RETRIES = 3
 RETRY_DELAY_SECONDS = 2
