@@ -4,9 +4,9 @@ Stratégie long-only, une position à la fois par valeur :
 - Entrée : le RSI hebdomadaire passe sous le seuil de survente (30).
 - Sortie : le RSI hebdomadaire passe au-dessus du seuil de surachat (70).
 
-Ce script réutilise le dernier export CSV produit par fetch_srd_prices.py
-(fichier srd_cours_cloture_*.csv le plus récent du dossier) plutôt que de
-retélécharger les données.
+Ce script réutilise le dernier export CSV produit par le script de
+récupération des cours (fichier srd_cours_cloture_*.csv le plus récent
+du dossier) plutôt que de retélécharger les données.
 
 Avertissement : avec ~1 an de données hebdomadaires (une cinquantaine de
 points par valeur), le nombre de signaux générés est très faible et les
@@ -30,7 +30,7 @@ def latest_prices_csv() -> Path:
     if not candidates:
         raise FileNotFoundError(
             "Aucun fichier srd_cours_cloture_*.csv trouvé dans "
-            f"{OUTPUT_DIR}. Lance d'abord fetch_srd_prices.py."
+            f"{OUTPUT_DIR}. Lance d'abord le script de récupération des cours."
         )
     return candidates[-1]
 
