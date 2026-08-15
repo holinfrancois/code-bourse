@@ -1,15 +1,15 @@
-"""Récupère les cours de clôture quotidiens des valeurs éligibles au SRD.
+"""Récupère les cours de clôture hebdomadaires des valeurs éligibles au SRD.
 
 Le SRD (Service de Règlement Différé) est un mécanisme d'Euronext Paris
 permettant de différer le règlement d'un ordre en fin de mois. Il concerne
 une liste de valeurs publiée par Euronext (essentiellement les plus grosses
 capitalisations et les plus liquides de la cote parisienne).
 
-Ce script est une première étape de vérification : il ne couvre pour
-l'instant qu'un échantillon d'une dizaine de valeurs SRD parmi les plus
-connues (à remplacer par la liste officielle complète d'Euronext une fois
-le principe validé) et affiche un aperçu des données pour confirmer que la
-récupération via Yahoo Finance (yfinance) fonctionne correctement.
+Ce script est une étape de vérification : il ne couvre pour l'instant
+qu'un échantillon de 30 valeurs SRD parmi les plus connues (à remplacer
+par la liste officielle complète d'Euronext une fois le principe validé)
+et affiche un aperçu des données pour confirmer que la récupération via
+Yahoo Finance (yfinance) fonctionne correctement.
 """
 
 import time
@@ -34,10 +34,30 @@ SRD_SAMPLE = {
     "AXA": "CS.PA",
     "Airbus": "AIR.PA",
     "Danone": "BN.PA",
+    "Kering": "KER.PA",
+    "Hermès International": "RMS.PA",
+    "Vinci": "DG.PA",
+    "Saint-Gobain": "SGO.PA",
+    "Société Générale": "GLE.PA",
+    "Crédit Agricole": "ACA.PA",
+    "Capgemini": "CAP.PA",
+    "Publicis Groupe": "PUB.PA",
+    "Dassault Systèmes": "DSY.PA",
+    "EssilorLuxottica": "EL.PA",
+    "Legrand": "LR.PA",
+    "Michelin": "ML.PA",
+    "Orange": "ORA.PA",
+    "Pernod Ricard": "RI.PA",
+    "Renault": "RNO.PA",
+    "Safran": "SAF.PA",
+    "Thales": "HO.PA",
+    "Veolia Environnement": "VIE.PA",
+    "Bouygues": "EN.PA",
+    "Carrefour": "CA.PA",
 }
 
-PERIOD = "3mo"
-INTERVAL = "1d"
+PERIOD = "1y"
+INTERVAL = "1wk"
 MAX_RETRIES = 3
 RETRY_DELAY_SECONDS = 2
 OUTPUT_DIR = Path(__file__).resolve().parent
@@ -57,7 +77,7 @@ def _download_closes(tickers: list, period: str) -> pd.DataFrame:
 
 
 def fetch_closing_prices(tickers: dict, period: str = PERIOD) -> pd.DataFrame:
-    """Télécharge les cours de clôture quotidiens pour les tickers donnés.
+    """Télécharge les cours de clôture hebdomadaires pour les tickers donnés.
 
     Certaines valeurs peuvent échouer ponctuellement (ex. cache SQLite de
     yfinance verrouillé) sans que les autres soient affectées : on retente
@@ -110,12 +130,12 @@ def save_outputs(prices: pd.DataFrame) -> None:
 def main() -> None:
     prices = fetch_closing_prices(SRD_SAMPLE)
 
-    print(f"\nPériode demandée : {PERIOD} | Valeurs testées : {len(SRD_SAMPLE)}")
-    print(f"Séances récupérées : {len(prices)}")
+    print(f"\nPériode demandée : {PERIOD} | Pas : {INTERVAL} | Valeurs testées : {len(SRD_SAMPLE)}")
+    print(f"Clôtures hebdomadaires récupérées : {len(prices)}")
     if not prices.empty:
         print(f"Période couverte : {prices.index.min().date()} -> {prices.index.max().date()}")
 
-    print("\nAperçu des 5 dernières séances (cours de clôture) :")
+    print("\nAperçu des 5 dernières clôtures hebdomadaires :")
     print(prices.tail(5).round(2))
 
     print("\nValeurs manquantes par titre :")
