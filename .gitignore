@@ -6,3 +6,7 @@ trades_rsi_*.csv
 trades_rsi_*.xlsx
 graphiques_rsi_*/
 optimisation_rsi_*.csv
+optimisation_macd_rsi_*.csv
+trades_macd_rsi_*.csv
+trades_macd_rsi_*.xlsx
+graphiques_macd_rsi_*/
