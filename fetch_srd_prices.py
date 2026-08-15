@@ -14,7 +14,7 @@ Yahoo Finance (yfinance) fonctionne correctement.
 
 import time
 import traceback
-from datetime import date
+from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
@@ -107,7 +107,7 @@ def save_outputs(prices: pd.DataFrame) -> None:
     (ex. openpyxl absent pour l'Excel) n'empêche pas l'autre d'être écrit,
     et l'erreur complète est affichée au lieu d'être avalée en silence.
     """
-    stem = f"srd_cours_cloture_{date.today():%Y%m%d}"
+    stem = f"srd_cours_cloture_{datetime.now():%Y%m%d_%H%M%S}"
     print(f"\nDossier de sortie : {OUTPUT_DIR}")
 
     csv_path = OUTPUT_DIR / f"{stem}.csv"
