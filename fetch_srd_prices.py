@@ -13,6 +13,7 @@ récupération via Yahoo Finance (yfinance) fonctionne correctement.
 """
 
 import time
+import traceback
 from datetime import date
 from pathlib import Path
 
@@ -39,7 +40,7 @@ PERIOD = "3mo"
 INTERVAL = "1d"
 MAX_RETRIES = 3
 RETRY_DELAY_SECONDS = 2
-OUTPUT_DIR = Path(__file__).parent
+OUTPUT_DIR = Path(__file__).resolve().parent
 
 
 def _download_closes(tickers: list, period: str) -> pd.DataFrame:
@@ -79,16 +80,31 @@ def fetch_closing_prices(tickers: dict, period: str = PERIOD) -> pd.DataFrame:
     return closes.rename(columns=ticker_to_name).sort_index()
 
 
-def save_outputs(prices: pd.DataFrame) -> tuple:
-    """Enregistre les cours récupérés en CSV et Excel, à côté du script."""
+def save_outputs(prices: pd.DataFrame) -> None:
+    """Enregistre les cours récupérés en CSV et Excel, à côté du script.
+
+    Les deux formats sont sauvegardés indépendamment : un échec sur l'un
+    (ex. openpyxl absent pour l'Excel) n'empêche pas l'autre d'être écrit,
+    et l'erreur complète est affichée au lieu d'être avalée en silence.
+    """
     stem = f"srd_cours_cloture_{date.today():%Y%m%d}"
+    print(f"\nDossier de sortie : {OUTPUT_DIR}")
+
     csv_path = OUTPUT_DIR / f"{stem}.csv"
+    try:
+        prices.to_csv(csv_path, encoding="utf-8-sig")
+        print(f"CSV écrit : {csv_path} (existe : {csv_path.exists()})")
+    except Exception:
+        print(f"ÉCHEC écriture CSV ({csv_path}) :")
+        traceback.print_exc()
+
     xlsx_path = OUTPUT_DIR / f"{stem}.xlsx"
-
-    prices.to_csv(csv_path, encoding="utf-8-sig")
-    prices.to_excel(xlsx_path, sheet_name="Cours clôture")
-
-    return csv_path, xlsx_path
+    try:
+        prices.to_excel(xlsx_path, sheet_name="Cours clôture")
+        print(f"Excel écrit : {xlsx_path} (existe : {xlsx_path.exists()})")
+    except Exception:
+        print(f"ÉCHEC écriture Excel ({xlsx_path}) :")
+        traceback.print_exc()
 
 
 def main() -> None:
@@ -105,8 +121,7 @@ def main() -> None:
     print("\nValeurs manquantes par titre :")
     print(prices.isna().sum())
 
-    csv_path, xlsx_path = save_outputs(prices)
-    print(f"\nFichiers enregistrés :\n- {csv_path}\n- {xlsx_path}")
+    save_outputs(prices)
 
 
 if __name__ == "__main__":
