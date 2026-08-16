@@ -10,3 +10,7 @@ optimisation_macd_rsi_*.csv
 trades_macd_rsi_*.csv
 trades_macd_rsi_*.xlsx
 graphiques_macd_rsi_*/
+optimisation_stop_rsi_*.csv
+trades_stop_rsi_*.csv
+trades_stop_rsi_*.xlsx
+graphiques_stop_rsi_*/
