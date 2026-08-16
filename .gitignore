@@ -14,3 +14,10 @@ optimisation_stop_rsi_*.csv
 trades_stop_rsi_*.csv
 trades_stop_rsi_*.xlsx
 graphiques_stop_rsi_*/
+optimisation_stop_rsi_entrainement_*.csv
+trades_entrainement_*.csv
+trades_entrainement_*.xlsx
+graphiques_entrainement_*/
+trades_test_horsech_*.csv
+trades_test_horsech_*.xlsx
+graphiques_test_horsech_*/
